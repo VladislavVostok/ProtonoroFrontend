@@ -1,10 +1,21 @@
-import { useState } from 'react'
+import { create } from 'zustand'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import './styles/App.css'
+
+
+type Store = {
+  count: number
+  inc: () => void
+}
+
+const useStore = create<Store>()((set) => ({
+  count: 1,
+  inc: () => set((state) => ({ count: state.count + 1 })),
+}))
 
 function App() {
-  const [count, setCount] = useState(0)
+   const { count, inc } = useStore()
 
   return (
     <>
@@ -18,7 +29,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={inc}>
           count is {count}
         </button>
         <p>
