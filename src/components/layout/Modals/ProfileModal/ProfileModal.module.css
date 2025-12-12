@@ -5,8 +5,6 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,7 +26,6 @@
   overflow-y: auto;
   box-shadow: var(--shadow-lg);
   animation: slideUp 0.3s ease;
-  border: 1px solid var(--border-color);
 }
 
 @keyframes slideUp {
@@ -78,6 +75,43 @@
   padding: 1.5rem;
 }
 
+.avatarSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.profileAvatarLarge {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.changeAvatarBtn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.changeAvatarBtn:hover {
+  background: var(--border-color);
+  color: var(--text-primary);
+}
+
 .formGroup {
   margin-bottom: 1.5rem;
 }
@@ -89,7 +123,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-secondary);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .formGroup input {
@@ -107,56 +141,6 @@
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.colorGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.colorOption {
-  width: 100%;
-  aspect-ratio: 1;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-}
-
-.colorOption:hover {
-  transform: scale(1.05);
-  box-shadow: var(--shadow-md);
-}
-
-.colorOption.selected {
-  outline: 3px solid var(--text-primary);
-  outline-offset: 2px;
-}
-
-.selectedColor {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  background: var(--bg-tertiary);
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-
-.colorPreview {
-  width: 24px;
-  height: 24px;
-  border-radius: 0.25rem;
-  border: 1px solid var(--border-color);
-}
-
-.colorValue {
-  font-family: monospace;
-  color: var(--text-primary);
 }
 
 .modalFooter {
@@ -193,17 +177,11 @@
   color: white;
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .submitButton:hover {
   background: #2563eb;
-}
-
-/* Адаптивность */
-@media (max-width: 640px) {
-  .modal {
-    margin: 1rem;
-    max-width: calc(100% - 2rem);
-    max-height: calc(100vh - 2rem);
-  }
 }

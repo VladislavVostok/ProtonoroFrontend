@@ -5,6 +5,8 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,6 +28,7 @@
   overflow-y: auto;
   box-shadow: var(--shadow-lg);
   animation: slideUp 0.3s ease;
+  border: 1px solid var(--border-color);
 }
 
 @keyframes slideUp {
@@ -205,4 +208,17 @@
 
 .submitButton:hover {
   background: #2563eb;
+}
+
+/* Адаптивность */
+@media (max-width: 640px) {
+  .modal {
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+  }
+  
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }

@@ -1,5 +1,5 @@
-import { Calendar, Target, Search, Plus, Moon, Sun } from 'lucide-react';
-//import { useState } from 'react';
+import { Calendar, Target, Search, Plus, Moon, Sun, User, Settings, LogOut, HelpCircle } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
 import styles from './Header.module.css';
 
 interface HeaderProps {
@@ -8,6 +8,12 @@ interface HeaderProps {
   searchQuery: string;
   onSearchChange: (value: string) => void;
   onNewTask: () => void;
+  onProfileAction: (action: string) => void;
+  profileData?: {
+    name: string;
+    email: string;
+    role: string;
+  };
 }
 
 const Header = ({ 
@@ -17,6 +23,51 @@ const Header = ({
   onSearchChange,
   onNewTask 
 }: HeaderProps) => {
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
+
+  // Закрытие меню при клике вне его
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setShowProfileMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleProfileClick = () => {
+    setShowProfileMenu(!showProfileMenu);
+  };
+
+  const handleProfileAction = (action: string) => {
+    console.log(`Profile action: ${action}`);
+    setShowProfileMenu(false);
+    
+    switch (action) {
+      case 'profile':
+        // Открыть настройки профиля
+        break;
+      case 'settings':
+        // Открыть настройки приложения
+        break;
+      case 'help':
+        // Открыть справку
+        break;
+      case 'logout':
+        // Выход из системы
+        if (window.confirm('Are you sure you want to logout?')) {
+          console.log('User logged out');
+          // Здесь будет логика выхода
+        }
+        break;
+    }
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.headerLeft}>
@@ -53,8 +104,66 @@ const Header = ({
           <Plus size={18} />
           New Task
         </button>
-        <div className={styles.userAvatar}>
-          <span>AD</span>
+        
+        <div className={styles.profileContainer} ref={profileMenuRef}>
+          <button 
+            className={styles.userAvatar}
+            onClick={handleProfileClick}
+            aria-label="Profile menu"
+          >
+            <span>AD</span>
+          </button>
+          
+          {showProfileMenu && (
+            <div className={styles.profileMenu}>
+              <div className={styles.profileInfo}>
+                <div className={styles.profileAvatarLarge}>
+                  <span>AD</span>
+                </div>
+                <div className={styles.profileDetails}>
+                  <h3>Alex Doe</h3>
+                  <p className={styles.profileEmail}>alex.doe@protonoro.com</p>
+                  <p className={styles.profileRole}>Product Manager</p>
+                </div>
+              </div>
+              
+              <div className={styles.menuDivider} />
+              
+              <button 
+                className={styles.menuItem}
+                onClick={() => handleProfileAction('profile')}
+              >
+                <User size={16} />
+                <span>My Profile</span>
+              </button>
+              
+              <button 
+                className={styles.menuItem}
+                onClick={() => handleProfileAction('settings')}
+              >
+                <Settings size={16} />
+                <span>Settings</span>
+              </button>
+              
+              <button 
+                className={styles.menuItem}
+                onClick={() => handleProfileAction('help')}
+              >
+                <HelpCircle size={16} />
+                <span>Help & Support</span>
+              </button>
+              
+              <div className={styles.menuDivider} />
+              
+              <button 
+                className={`${styles.menuItem} ${styles.menuItemLogout}`}
+                onClick={() => handleProfileAction('logout')}
+              >
+                <LogOut size={16} />
+                <span>Logout</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>

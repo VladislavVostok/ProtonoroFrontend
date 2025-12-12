@@ -6,6 +6,8 @@ import DropZone from './components/layout/Dropzone/DropZone';
 import CategoryPopup from './components/layout/Modals/CategoryPopup/CategoryPopup';
 import CategoryModal from './components/layout/Modals/CategoryModal/CategoryModal';
 import TaskModal from './components/layout/Modals/TaskModal/TaskModal';
+import ProfileModal from './components/layout/Modals/ProfileModal/ProfileModal';
+import Analytics from './components/layout/Analytics/Analytics';
 import type { Category, TimerState, DroppedCategory, Task } from './types';
 import './styles/App.css';
 
@@ -26,6 +28,8 @@ const App = () => {
   // Модальные окна
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
   
   // Редактирование
   const [editingTask, setEditingTask] = useState<{ categoryId: number; task: Task } | null>(null);
@@ -40,6 +44,15 @@ const App = () => {
   // Search
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Профиль пользователя
+  const [profileData, setProfileData] = useState({
+    name: 'Alex Doe',
+    email: 'alex.doe@protonoro.com',
+    role: 'Product Manager'
+  });
+
+  // Активная вкладка (задачи / аналитика)
+  const [activeTab, setActiveTab] = useState<'tasks' | 'analytics'>('tasks');
   // Данные
   const [categories, setCategories] = useState<Category[]>([
     { 
@@ -135,6 +148,59 @@ const App = () => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // ========== ОБРАБОТЧИК АНАЛИТИКИ ==========
+  const handleOpenAnalytics = () => {
+    setActiveTab('analytics');
+    setIsAnalyticsOpen(true);
+  };
+  // ========= ОБРАБОТЧИК ЗАКРЫТИЯ АНАЛИТИКИ ==========
+  const handleCloseAnalytics = () => {
+  setActiveTab('tasks');
+  setIsAnalyticsOpen(false);
+  };
+
+  // ========== ОБРАБОТЧИК НАЖАТИЯ НА ЗАДАЧИ ==========
+  const handleTasksClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setActiveTab('tasks');
+    setIsAnalyticsOpen(false);
+  };
+
+  // ========== ОБРАБОТЧИКИ ПРОФИЛЯ ==========
+  const handleProfileAction = (action: string) => {
+    console.log(`Profile action: ${action}`);
+    
+    switch (action) {
+      case 'profile':
+        setIsProfileModalOpen(true);
+        break;
+      case 'settings':
+        // Можно добавить модальное окно настроек приложения
+        console.log('Open app settings');
+        alert('App settings will be implemented soon!');
+        break;
+      case 'help':
+        // Можно добавить страницу помощи
+        console.log('Open help');
+        alert('Help & Support will be implemented soon!');
+        break;
+      case 'logout':
+        if (window.confirm('Are you sure you want to logout?')) {
+          console.log('User logged out');
+          // Здесь будет логика выхода (редирект, очистка токенов и т.д.)
+          alert('Logged out successfully!');
+        }
+        break;
+      default:
+        console.log(`Unknown action: ${action}`);
+    }
+  };
+
+  const handleProfileSave = (profileData: any) => {
+    setProfileData(profileData);
+    console.log('Profile saved:', profileData);
   };
 
   // ========== ОБРАБОТЧИКИ DRAG & DROP ==========
@@ -435,7 +501,7 @@ const App = () => {
   const completedTasks = allTasks.filter(t => t.completed).length;
   const inProgressTasks = allTasks.filter(t => !t.completed && t.progress > 0).length;
 
-  return (
+return (
     <div className={`app ${darkMode ? 'dark' : ''}`}>
       <Header 
         darkMode={darkMode}
@@ -446,6 +512,8 @@ const App = () => {
           setEditingTask(null);
           setIsTaskModalOpen(true);
         }}
+        onProfileAction={handleProfileAction}
+        profileData={profileData}
       />
 
       <div className="main-layout">
@@ -465,6 +533,9 @@ const App = () => {
             setEditingCategory(null);
             setIsCategoryModalOpen(true);
           }}
+          onOpenAnalytics={handleOpenAnalytics}
+          onTasksClick={handleTasksClick}
+          activeTab={activeTab}
           totalTasks={totalTasks}
           completedTasks={completedTasks}
           inProgressTasks={inProgressTasks}
@@ -522,6 +593,25 @@ const App = () => {
                 }
               }}
               initialData={editingCategory}
+            />
+          )}
+
+          {/* Модальное окно для профиля */}
+          {isProfileModalOpen && (
+            <ProfileModal
+              isOpen={isProfileModalOpen}
+              onClose={() => setIsProfileModalOpen(false)}
+              onSave={handleProfileSave}
+              initialData={profileData}
+            />
+          )}
+
+          {/* Окно аналитики */}
+          {isAnalyticsOpen && (
+            <Analytics
+              isOpen={isAnalyticsOpen}
+              onClose={handleCloseAnalytics} // Используем обновленный обработчик
+              categories={categories}
             />
           )}
 
