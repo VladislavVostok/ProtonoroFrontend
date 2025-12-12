@@ -35,55 +35,6 @@ const Header = ({
   const profileMenuRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
 
-  // Обновляем текущую дату при загрузке
-  useEffect(() => {
-    updateFullDate();
-    // Обновляем дату каждый день
-    const interval = setInterval(updateCurrentDate, 3600000); // Каждый час
-    return () => clearInterval(interval);
-  }, []);
-
-  // Вариант 1: Просто месяц и год
-  const updateCurrentDate = () => {
-    const now = new Date();
-    const month = now.toLocaleString('default', { month: 'long' });
-    const year = now.getFullYear();
-    setCurrentDate(`${month} ${year}`);
-  };
-
-  // Вариант 2: Полная дата с днем недели
-  const updateFullDate = () => {
-    const now = new Date();
-    const options: Intl.DateTimeFormatOptions = { 
-      month: 'long', 
-      year: 'numeric',
-      weekday: 'long',
-      day: 'numeric'
-    };
-    const formattedDate = now.toLocaleDateString('default', options);
-    setCurrentDate(formattedDate);
-  };
-
-  // Вариант 3: Кастомный формат (например: "Friday, September 27, 2024")
-  // const updateCustomDate = () => {
-  //   const now = new Date();
-  //   const month = now.toLocaleString('default', { month: 'long' });
-  //   const year = now.getFullYear();
-  //   const day = now.getDate();
-  //   const weekday = now.toLocaleString('default', { weekday: 'long' });
-  //   setCurrentDate(`${weekday}, ${month} ${day}, ${year}`);
-  // };
-
-  // // Вариант 4: Для русского языка
-  // const updateRussianDate = () => {
-  //   const now = new Date();
-  //   const month = now.toLocaleString('ru-RU', { month: 'long' });
-  //   const year = now.getFullYear();
-  //   // Первая буква заглавная
-  //   const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
-  //   setCurrentDate(`${capitalizedMonth} ${year}`);
-  // };
-
   // Закрытие меню при клике вне его
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
