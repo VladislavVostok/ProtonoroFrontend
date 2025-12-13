@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'; // Добавляем useNavigate
 import Header from '../../components/layout/Header/Header';
 import Sidebar from '../../components/layout/Sidebar/Sidebar';
-import TimerSection from '../../components/layout/Timer/TimerSection';
-import DropZone from '../../components/layout/Dropzone/DropZone';
+import TimerSection from '../../components/layout/timer/TimerSection';
+import DropZone from '../../components/layout/dropzone/DropZone';
 import CategoryPopup from '../../components/layout/Modals/CategoryPopup/CategoryPopup';
 import CategoryModal from '../../components/layout/Modals/CategoryModal/CategoryModal';
 import TaskModal from '../../components/layout/Modals/TaskModal/TaskModal';
